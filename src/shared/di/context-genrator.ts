@@ -1,3 +1,4 @@
+"use client";
 import { createContext, useContext as useReactContext } from "react";
 /**
  * null Assertion이 내장된 useContext와 null 유니온 처리를 알아서 수행하는 유틸함수입니다.
