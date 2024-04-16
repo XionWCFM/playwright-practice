@@ -1,3 +1,4 @@
+"use client";
 import { queryOptions, useSuspenseQuery } from "@tanstack/react-query";
 import { ApiService } from "~/src/shared/di/api-service.class";
 import { contextGenerator } from "~/src/shared/di/context-genrator";

@@ -1,3 +1,4 @@
+"use client";
 import { PropsWithChildren } from "react";
 import { ExampleApiService, ExampleContext } from "~/src/entities/example";
 
