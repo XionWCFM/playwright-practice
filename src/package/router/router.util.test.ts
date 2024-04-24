@@ -75,6 +75,6 @@ describe("createInternalPath test", () => {
     expect(createInternalPath("/hello", { query: { hello: "world", hi: "add" } })).toBe("/hello?hello=world&hi=add");
   });
   it("path가 있는 경우 이에 대해 대응합니다.", () => {
-    expect(createInternalPath("/hello")).toBe("/hello?hello=world&hi=add");
+    expect(createInternalPath("/hello", { pathname: ["hello", "world"] })).toBe("/hello/hello/world");
   });
 });

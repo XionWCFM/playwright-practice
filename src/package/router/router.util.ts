@@ -1,4 +1,5 @@
 import * as qs from "qs";
+import { useInternalRouter } from "./use-internal-router";
 
 type DefaultQuery = Record<string, any>;
 type DefaultPathname = Array<[string, any]>;
@@ -14,6 +15,7 @@ type ExtractPathnameValue<T extends DefaultPathname> = {
   [K in keyof T]: T[K] extends [any, infer V] ? V : never;
 };
 
+type RoutesString = `/${string}`;
 export type RoutesQueryAndPath<T extends DefaultRouterType = DefaultRouterType> = {
   query: T["query"] extends DefaultQuery ? Partial<T["query"]> : DefaultQuery;
   pathname: T["pathname"] extends DefaultPathname ? TupleArrayToRecord<T["pathname"]> : Record<string, any>;
@@ -40,13 +42,19 @@ export const stringfyPathname = (str?: string[]) => {
 
 export const createInternalPath = <
   E extends Pick<RoutesQueryAndPath, "pathnameValue" | "query">,
-  T extends `/${string}` = `/${string}`,
+  T extends RoutesString = RoutesString,
 >(
   basePath: T,
   option?: { query?: E["query"]; pathname?: E["pathnameValue"] },
 ) => {
   const path = stringfyPathname(option?.pathname);
   const query = stringfySearchParams(option?.query);
+  const pathSlash = path.length > 0 ? "/" : "";
   const questionmark = query.length > 0 ? "?" : "";
-  return `${basePath}${path}${questionmark}${query}`;
+  return `${basePath}${pathSlash}${path}${questionmark}${query}`;
 };
+
+export const createRoutes = <T extends RoutesQueryAndPath = RoutesQueryAndPath>(basePath: RoutesString) => ({
+  path: (arg?: T["arg"]) => createInternalPath(basePath, arg),
+  useRouter: () => useInternalRouter<T>(),
+});
