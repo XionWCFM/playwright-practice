@@ -1,8 +1,8 @@
 "use client";
-import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useExampleContext } from "~/src/entities/example";
+import { useInternalRouter } from "~/src/package/router/use-internal-router";
 import { fetcher } from "~/src/shared/di/api-service.class";
 import Portal from "~/src/shared/ui/portal";
 
@@ -10,7 +10,8 @@ export default function Home() {
   const service = useExampleContext();
   const hi = fetcher(fetch);
   const [isLoading, setIsLoading] = useState(false);
-  const router = useRouter();
+  const router = useInternalRouter();
+  console.log(router);
   return (
     <main>
       <button
