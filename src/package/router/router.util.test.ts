@@ -1,4 +1,4 @@
-import { parseSearchParams, stringfySearchParams, stringfyPathname } from "./router.util";
+import { parseSearchParams, stringfySearchParams, stringfyPathname, createInternalPath } from "./router.util";
 describe("parseSearchParams 테스트", () => {
   it("쿼리스트링 문자열을 객체로 변환할 수 있습니다.", () => {
     const parse = parseSearchParams<{ test: string }>("test=hello");
@@ -61,5 +61,20 @@ describe("stringfy pathname test", () => {
   it("길이가 긴 path를 입력받으면 이를 반영합니다.", () => {
     expect(stringfyPathname(["hello", "world"])).toBe("hello/world");
     expect(stringfyPathname(["hello", "world", "hi"])).toBe("hello/world/hi");
+  });
+});
+
+describe("createInternalPath test", () => {
+  it("평범한 입력에 대해 평범하게 대응합니다.", () => {
+    expect(createInternalPath("/hello")).toBe("/hello");
+  });
+  it("쿼리스트링이 있는 경우 입력에 대해 쿼리스트링도 대응합니다.", () => {
+    expect(createInternalPath("/hello", { query: { hello: "world" } })).toBe("/hello?hello=world");
+  });
+  it("쿼리스트링 여러개 있는 경우 입력에 대해 여러개의 쿼리스트링도 대응합니다.", () => {
+    expect(createInternalPath("/hello", { query: { hello: "world", hi: "add" } })).toBe("/hello?hello=world&hi=add");
+  });
+  it("path가 있는 경우 이에 대해 대응합니다.", () => {
+    expect(createInternalPath("/hello")).toBe("/hello?hello=world&hi=add");
   });
 });

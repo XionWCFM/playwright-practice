@@ -1,12 +1,13 @@
 "use client";
 import { useParams, usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useMemo } from "react";
+import { RoutesQueryAndPath, parseSearchParams } from "./router.util";
 
-export const useInternalRouter = () => {
+export const useInternalRouter = <T extends Pick<RoutesQueryAndPath, "query" | "pathname"> = RoutesQueryAndPath>() => {
   const router = useRouter();
   const pathname = usePathname();
   const serachParams = useSearchParams();
-  const params = useParams();
+  const params = useParams<T["pathname"]>();
   const href = typeof window !== "undefined" ? window?.location?.href : "";
   const hostname = typeof window !== "undefined" ? window?.location?.hostname : "";
   const protocol = typeof window !== "undefined" ? window?.location?.protocol : "";
@@ -21,6 +22,7 @@ export const useInternalRouter = () => {
       prefetch: (href: string) => router.prefetch(href),
       pathname: pathname,
       searchParams: serachParams.toString(),
+      query: parseSearchParams<T["query"]>(serachParams.toString()),
       get: (qs: string) => serachParams.get(qs),
       params: params,
       href: href,
