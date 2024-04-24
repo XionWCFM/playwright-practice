@@ -18,6 +18,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
+        <div id="overlay-loading"></div>
         <DiProvider>{children}</DiProvider>
       </body>
     </html>
