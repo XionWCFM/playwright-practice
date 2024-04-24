@@ -20,6 +20,10 @@ export type RoutesQueryAndPath<T extends DefaultRouterType = DefaultRouterType> 
   pathnameValue: T["pathname"] extends DefaultPathname ? ExtractPathnameValue<T["pathname"]> : string[];
   pathnameTuple: T["pathname"] extends DefaultPathname ? T["pathname"] : DefaultPathname;
   pathnameCatchAll: T["catchAll"] extends string ? Record<T["catchAll"], string[]> : Record<string, string[]>;
+  arg: {
+    query?: T["query"] extends DefaultQuery ? Partial<T["query"]> : DefaultQuery;
+    pathname?: T["pathname"] extends DefaultPathname ? ExtractPathnameValue<T["pathname"]> : string[];
+  };
 };
 
 export const parseSearchParams = <T extends Record<string, unknown>>(param?: string): T => {

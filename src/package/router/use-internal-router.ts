@@ -12,7 +12,8 @@ export const useInternalRouter = <T extends Pick<RoutesQueryAndPath, "query" | "
   const hostname = typeof window !== "undefined" ? window?.location?.hostname : "";
   const protocol = typeof window !== "undefined" ? window?.location?.protocol : "";
   const host = typeof window !== "undefined" ? window?.location?.host : "";
-  const basePath = `${protocol}//${host}`;
+  const slash = typeof window !== "undefined" ? "//" : "";
+  const basePath = `${protocol}${slash}${host}`;
   return useMemo(
     () => ({
       push: (href: string, option?: { scroll?: boolean }) => router.push(href, option),

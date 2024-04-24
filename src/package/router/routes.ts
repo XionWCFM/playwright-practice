@@ -1,9 +1,12 @@
-import { RoutesQueryAndPath } from "./router.util";
+"use client";
+import { RoutesQueryAndPath, createInternalPath } from "./router.util";
 import { useInternalRouter } from "./use-internal-router";
 
-const Routes = {
+type HomeRoutes = RoutesQueryAndPath<{ query: { type: "hello" | "world" } }>;
+
+export const Routes = {
   home: {
-    path: () => {},
-    useRouter: () => useInternalRouter(),
+    path: (arg?: HomeRoutes["arg"]) => createInternalPath("/", arg),
+    useRouter: () => useInternalRouter<HomeRoutes>(),
   },
 };
