@@ -1,5 +1,5 @@
-import React, { ReactNode } from "react";
-import { render, screen } from "@testing-library/react";
+import React, { PropsWithChildren, ReactNode } from "react";
+import { render, renderHook, screen } from "@testing-library/react";
 import * as builder from "./builder";
 import userEvent from "@testing-library/user-event";
 
@@ -51,5 +51,16 @@ describe("builder Tree의 동작을 테스트합니다.", () => {
     expect(testId1).toContainElement(testId2);
     expect(testId2).toContainElement(testId3);
     expect(testId3).toContainElement(testId4);
+  });
+});
+
+describe("builder context의 동작을 테스트합니다.", () => {
+  it("리턴값은 튜플입니다.", () => {
+    const [Provider, useContext] = builder.context<{ hello: string }>(null);
+    render(<Provider value={null}>hello</Provider>);
+    const { result } = renderHook(() => useContext(), {
+      wrapper: ({ children }: PropsWithChildren) => <Provider value={{ hello: "world" }}>{children}</Provider>,
+    });
+    expect(result.current.hello).toBe("world");
   });
 });
