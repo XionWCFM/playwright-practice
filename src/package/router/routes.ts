@@ -1,17 +1,15 @@
 "use client";
-import { RoutesQueryAndPath, createRoutes } from "./router.util";
+import { createRoutes } from "./router.util";
 
-type HomeRoutes = RoutesQueryAndPath<{ query: { type: "hello" | "world" } }>;
-type LoginRoutes = RoutesQueryAndPath<{ query: { from: "landing" | "referrer" } }>;
-type PostRoutes = RoutesQueryAndPath<{ pathname: [["slug", "react" | "typescript"]] }>;
+type HomeRoutes = { query: { type: "hello" | "world" } };
+type LoginRoutes = { query: { from: "landing" | "referrer" } };
+type PostRoutes = { pathname: [["slug", "react" | "typescript"]] };
 
 export const Routes = {
   home: createRoutes<HomeRoutes>("/"),
   login: createRoutes<LoginRoutes>("/login"),
   post: createRoutes<PostRoutes>("/post"),
 } as const;
-
-type HelloWorldProps = { params: PostRoutes["pathname"] };
 
 const Example = () => {
   const router = Routes.post.useRouter();

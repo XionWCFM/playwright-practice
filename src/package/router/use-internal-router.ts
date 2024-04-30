@@ -1,13 +1,13 @@
 "use client";
 import { useParams, usePathname, useRouter, useSearchParams } from "next/navigation";
 import { useMemo } from "react";
-import { RoutesQueryAndPath, parseSearchParams } from "./router.util";
+import { DefaultRouterType, RoutesQueryAndPath, parseSearchParams } from "./router.util";
 
-export const useInternalRouter = <T extends Pick<RoutesQueryAndPath, "query" | "pathname"> = RoutesQueryAndPath>() => {
+export const useInternalRouter = <T extends DefaultRouterType = DefaultRouterType>() => {
   const router = useRouter();
   const pathname = usePathname();
   const serachParams = useSearchParams();
-  const params = useParams<T["pathname"]>();
+  const params = useParams<RoutesQueryAndPath<T>["pathname"]>();
   const href = typeof window !== "undefined" ? window?.location?.href : "";
   const hostname = typeof window !== "undefined" ? window?.location?.hostname : "";
   const protocol = typeof window !== "undefined" ? window?.location?.protocol : "";
@@ -23,7 +23,7 @@ export const useInternalRouter = <T extends Pick<RoutesQueryAndPath, "query" | "
       prefetch: (href: string) => router.prefetch(href),
       pathname: pathname,
       searchParams: serachParams.toString(),
-      query: parseSearchParams<T["query"]>(serachParams.toString()),
+      query: parseSearchParams<RoutesQueryAndPath<T>["query"]>(serachParams.toString()),
       get: (qs: string) => serachParams.get(qs),
       params: params,
       href: href,

@@ -3,7 +3,7 @@ import { useInternalRouter } from "./use-internal-router";
 
 type DefaultQuery = Record<string, any>;
 type DefaultPathname = Array<[string, any]>;
-type DefaultRouterType = {
+export type DefaultRouterType = {
   query?: DefaultQuery;
   pathname?: DefaultPathname;
   catchAll?: string;
@@ -54,7 +54,7 @@ export const createInternalPath = <
   return `${basePath}${pathSlash}${path}${questionmark}${query}`;
 };
 
-export const createRoutes = <T extends RoutesQueryAndPath = RoutesQueryAndPath>(basePath: RoutesString) => ({
-  path: (arg?: T["arg"]) => createInternalPath(basePath, arg),
+export const createRoutes = <T extends DefaultRouterType = DefaultRouterType>(basePath: RoutesString) => ({
+  path: (arg?: RoutesQueryAndPath<T>["arg"]) => createInternalPath(basePath, arg),
   useRouter: () => useInternalRouter<T>(),
 });
