@@ -17,13 +17,13 @@ type ExtractPathnameValue<T extends DefaultPathname> = {
 
 type RoutesString = `/${string}`;
 export type RoutesQueryAndPath<T extends DefaultRouterType = DefaultRouterType> = {
-  query: T["query"] extends DefaultQuery ? Partial<T["query"]> : DefaultQuery;
+  query: T["query"] extends DefaultQuery ? T["query"] : DefaultQuery;
   pathname: T["pathname"] extends DefaultPathname ? TupleArrayToRecord<T["pathname"]> : Record<string, any>;
   pathnameValue: T["pathname"] extends DefaultPathname ? ExtractPathnameValue<T["pathname"]> : string[];
   pathnameTuple: T["pathname"] extends DefaultPathname ? T["pathname"] : DefaultPathname;
   pathnameCatchAll: T["catchAll"] extends string ? Record<T["catchAll"], string[]> : Record<string, string[]>;
   arg: {
-    query?: T["query"] extends DefaultQuery ? Partial<T["query"]> : DefaultQuery;
+    query?: T["query"] extends DefaultQuery ? T["query"] : DefaultQuery;
     pathname?: T["pathname"] extends DefaultPathname ? ExtractPathnameValue<T["pathname"]> : string[];
   };
 };
