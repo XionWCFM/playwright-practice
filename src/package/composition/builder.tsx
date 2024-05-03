@@ -9,7 +9,7 @@ import {
 
 export const provider = <T extends ComponentType<any>>(
   Component: T,
-  prop: Omit<ComponentPropsWithoutRef<T>, "children">,
+  prop?: Omit<ComponentPropsWithoutRef<T>, "children">,
 ): [T, ComponentPropsWithoutRef<T>] => [Component, prop as ComponentPropsWithoutRef<T>];
 
 export const tree = <T extends ReturnType<typeof provider>>(providerTree: Array<T>) => {

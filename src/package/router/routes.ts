@@ -11,7 +11,6 @@ export const Routes = {
   post: createRoutes<PostRoutes>("/post"),
 } as const;
 
-const Example = () => {
-  const router = Routes.post.useRouter();
-  router.push(Routes.login.path());
+const HomePage = () => {
+  const router = Routes.home.useRouter();
 };
