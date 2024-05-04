@@ -7,6 +7,7 @@ type Props<C extends ElementType> = PolymorphicComponentProps<
   C,
   {
     size?: Size;
+    className?: string;
   }
 >;
 
@@ -15,13 +16,13 @@ type ButtonType = <C extends ElementType = "button">(
 ) => ReactNode | null;
 
 export const Button: ButtonType = forwardRef(function Button<C extends ElementType = "button">(
-  { children, size = "small", as, ...rest }: Props<C>,
+  { children, size = "small", as, className, ...rest }: Props<C>,
   ref?: PolymorphicRef<C>,
 ) {
   const Component = as || "button";
 
   return (
-    <Component ref={ref} size={size} {...rest}>
+    <Component ref={ref} size={size} className={" bg-purple-700 text-white p-16" + "" + className} {...rest}>
       {children}
     </Component>
   );
