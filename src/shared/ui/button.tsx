@@ -1,5 +1,9 @@
 import { ElementType, ReactNode, forwardRef } from "react";
-import { PolymorphicComponentProps, PolymorphicComponentPropsWithRef, PolymorphicRef } from "./polymorphic.type";
+import {
+  PolymorphicComponentProps,
+  PolymorphicComponentPropsWithRef,
+  PolymorphicRef,
+} from "~/src/package/polymorphic/polymorphic.type";
 
 type Size = "small" | "large";
 
@@ -11,7 +15,7 @@ type Props<C extends ElementType> = PolymorphicComponentProps<
   }
 >;
 
-type ButtonType = <C extends ElementType = "button">(
+type ButtonType = <C extends ElementType = "button" | "a">(
   props: PolymorphicComponentPropsWithRef<C, Props<C>>,
 ) => ReactNode | null;
 
