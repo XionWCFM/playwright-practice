@@ -20,8 +20,7 @@ export const tree = <T extends ReturnType<typeof provider>>(providerTree: Array<
   };
 };
 export const context = <T extends Record<string, any>>(initialValue: T | null) => {
-  type GeneratedContextType = T | null;
-  const Context = createContext<GeneratedContextType>(initialValue);
+  const Context = createContext<T | null>(initialValue);
   const useContext = () => {
     const value = useReactContext(Context);
     if (!value) {

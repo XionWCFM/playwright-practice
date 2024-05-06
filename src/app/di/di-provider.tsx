@@ -1,13 +1,7 @@
 "use client";
-import { PropsWithChildren } from "react";
-import { ExampleApiService, ExampleContext } from "~/src/entities/example";
+import { ExampleApiProvider, createExampleApiService } from "~/src/entities/example";
+import { builder } from "~/src/package/composition/builder";
 
-const exampleService = new ExampleApiService(fetch);
-
-export const DiProvider = ({ children }: PropsWithChildren) => {
-  return (
-    <ExampleContext.Provider value={exampleService}>
-      {children}
-    </ExampleContext.Provider>
-  );
-};
+export const DiProvider = builder.tree([
+  builder.provider(ExampleApiProvider, { value: createExampleApiService(fetch) }),
+]);

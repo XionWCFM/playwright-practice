@@ -1,51 +1,39 @@
 "use client";
 import { queryOptions, useSuspenseQuery } from "@tanstack/react-query";
-import { ApiService } from "~/src/shared/di/api-service.class";
-import { contextGenerator } from "~/src/shared/di/context-genrator";
+import { builder } from "~/src/package/composition/builder";
+import { Fetch } from "~/src/shared/di/fetch.type";
 
 export const EXAMPLE_END_POINT = {
-  default: "/api/example",
+  default: () => "/api/example",
 };
 
 export const EXAMPLE_QUERY_KEY = {
-  all: ["example"] as const,
-  detail: (id: string) => [...EXAMPLE_QUERY_KEY.all, id],
+  all: () => ["example"] as const,
+  detail: (id: string) => [...EXAMPLE_QUERY_KEY.all(), id],
 };
 
-export class ExampleApiService extends ApiService {
-  async getExample() {
-    const response = await this.fetch(`${EXAMPLE_END_POINT.default}`);
-    const result = await response.json();
-    return result;
-  }
-  async getDetailExample(id: string) {
-    const response = await this.fetch(
-      `${EXAMPLE_END_POINT.default}?value=${id}`,
-    );
-    const result = await response.json();
-    return result;
-  }
-  async postExample(id: string) {
-    const response = await this.fetch(
-      `${EXAMPLE_END_POINT.default}?value=${id}`,
-      {
-        method: "POST",
-      },
-    );
-    const result = await response.json();
-    return result;
-  }
-}
+export const createExampleApiService = (injectFetch: Fetch) => {
+  return {
+    getExample: async () => {
+      const response = await injectFetch(`${EXAMPLE_END_POINT.default()}`);
+      const result = await response.json();
+      return result;
+    },
+    getDetailExample: async (id: string) => {
+      const response = await injectFetch(`${EXAMPLE_END_POINT.default()}`);
+      const result = await response.json();
+      return result;
+    },
+  } as const;
+};
 
-export const EXAMPLE_QUERY_OPTIONS = ({
-  exampleService,
-}: {
-  exampleService: ExampleApiService;
-}) => {
+export type ExampleApiServiceType = ReturnType<typeof createExampleApiService>;
+
+export const exampleQueryOptions = ({ exampleService }: { exampleService: ExampleApiServiceType }) => {
   return {
     all: () =>
       queryOptions({
-        queryKey: EXAMPLE_QUERY_KEY.all,
+        queryKey: EXAMPLE_QUERY_KEY.all(),
         queryFn: () => exampleService.getExample(),
       }),
     detail: (id: string) =>
@@ -56,10 +44,9 @@ export const EXAMPLE_QUERY_OPTIONS = ({
   };
 };
 
-export const ExampleContext = contextGenerator<ExampleApiService>(null);
-export const useExampleContext = ExampleContext.useContext;
+export const [ExampleApiProvider, useExampleApiContext] = builder.context<ExampleApiServiceType>(null);
 
 export const useExampleQuery = () => {
-  const exampleService = useExampleContext();
-  return useSuspenseQuery(EXAMPLE_QUERY_OPTIONS({ exampleService }).all());
+  const exampleService = useExampleApiContext();
+  return useSuspenseQuery(exampleQueryOptions({ exampleService }).all());
 };

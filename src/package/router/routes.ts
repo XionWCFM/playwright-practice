@@ -10,7 +10,3 @@ export const Routes = {
   login: createRoutes<LoginRoutes>("/login"),
   post: createRoutes<PostRoutes>("/post"),
 } as const;
-
-const HomePage = () => {
-  const router = Routes.home.useRouter();
-};

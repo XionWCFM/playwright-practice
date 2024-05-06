@@ -1,5 +1,5 @@
 import { renderHook, waitFor } from "@testing-library/react";
-import { ExampleApiService, ExampleContext, useExampleQuery } from "./example.api";
+import { ExampleApiProvider, createExampleApiService, useExampleQuery } from "./example.api";
 import { createWrapper } from "~/src/shared/testing/testing.util";
 describe("", () => {
   let mockFetch: jest.Mock;
@@ -15,8 +15,8 @@ describe("", () => {
     const { result } = renderHook(() => useExampleQuery(), {
       wrapper: createWrapper([
         {
-          provider: ExampleContext.Provider,
-          props: { value: new ExampleApiService(mockFetch) },
+          provider: ExampleApiProvider,
+          props: { value: createExampleApiService(mockFetch) },
         },
       ]),
     });
