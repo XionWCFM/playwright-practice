@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import { DiProvider } from "~/src/app/di/di-provider";
+import { Providers } from "~/src/app/provider/providers";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -19,7 +19,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <div id="overlay-loading"></div>
-        <DiProvider>{children}</DiProvider>
+        <Providers>{children}</Providers>
       </body>
     </html>
   );
