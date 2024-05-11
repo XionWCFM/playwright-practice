@@ -2,6 +2,7 @@ import React, { PropsWithChildren, ReactNode } from "react";
 import { render, renderHook, screen } from "@testing-library/react";
 import * as builder from "./builder";
 import userEvent from "@testing-library/user-event";
+import { vi } from "vitest";
 
 describe("builder provider의 동작을 테스트합니다.", () => {
   it("builder provider의 해피케이스일때의 동작을 테스트합니다.", () => {
@@ -17,7 +18,7 @@ describe("builder provider의 동작을 테스트합니다.", () => {
     expect(screen.getByText(/자식/)).toBeInTheDocument();
   });
   it("builder Provder는 함수도 인수로 넘겨받을 수 있습니다.", async () => {
-    const onClick = jest.fn();
+    const onClick = vi.fn();
     const Component = ({ onClick, name, children }: { onClick?: () => void; name: string; children?: ReactNode }) => {
       return (
         <button data-testid="1" onClick={() => onClick?.()}>
